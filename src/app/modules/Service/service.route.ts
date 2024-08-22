@@ -12,6 +12,8 @@ router.post('/',
     validateRequest(ServiceValidation.serviceValidationSchema),
     ServiceControllers.createService);
 
+router.get('/:id', ServiceControllers.getSingleService);
+
 
 
 export const ServiceRoutes = router;
