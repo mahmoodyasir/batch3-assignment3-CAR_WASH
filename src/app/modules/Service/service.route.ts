@@ -13,6 +13,7 @@ router.post('/',
     ServiceControllers.createService);
 
 router.get('/:id', ServiceControllers.getSingleService);
+router.get('/', ServiceControllers.getAllService);
 
 
 

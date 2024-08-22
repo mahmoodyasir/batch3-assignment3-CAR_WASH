@@ -31,7 +31,21 @@ const getSingleServiceFromDB = async (id: string) => {
     return remainingData;
 }
 
+
+const getAllServiceFromDB = async () => {
+
+    const obtainedServices = await Service.find().select('-__v');
+
+    if (!obtainedServices) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Services Not Found !');
+    }
+
+
+    return obtainedServices;
+}
+
 export const ServiceOfServices = {
     createServiceIntoDB,
     getSingleServiceFromDB,
+    getAllServiceFromDB,
 }
