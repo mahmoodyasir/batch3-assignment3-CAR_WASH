@@ -32,5 +32,5 @@ const userLogin = catchAsync(async (req, res) => {
 
 export const UserControllers = {
     userSignUp,
-    userLogin
+    userLogin,
 }

@@ -3,6 +3,9 @@ import { TUserRole } from "../modules/User/user.interface";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../errors/AppError";
 import httpStatus from "http-status";
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import config from "../config";
+import { User } from "../modules/User/user.model";
 
 
 const auth = (...requiredRoles: TUserRole[]) => {
@@ -16,7 +19,31 @@ const auth = (...requiredRoles: TUserRole[]) => {
             throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
         }
 
-        //will continue .....
+
+        const decoded = jwt.verify(
+            token,
+            config.jwt_access_secret as string,
+        ) as JwtPayload;
+
+        const { email, role, iat } = decoded;
+
+        const user = await User.isUserExistsByEmail(email);
+
+        if (!user) {
+            throw new AppError(httpStatus.NOT_FOUND, 'User Not Found !');
+        }
+
+        if (requiredRoles && !requiredRoles.includes(role)) {
+            throw new AppError(
+                httpStatus.UNAUTHORIZED,
+                'NO ACCESS ! You are Not Authorized',
+            );
+        }
+
+        req.user = decoded as JwtPayload;
+
+        next();
+
     })
 };
 

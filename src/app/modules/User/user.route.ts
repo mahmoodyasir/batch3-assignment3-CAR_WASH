@@ -15,4 +15,5 @@ router.post('/login',
     validateRequest(UserValidation.loginDataValidationSchema),
     UserControllers.userLogin);
 
+
 export const UserRoutes = router;
