@@ -30,7 +30,7 @@ const getSingleServiceFromDB = async (id: string) => {
 
 const getAllServiceFromDB = async () => {
 
-    const obtainedServices = await Service.find().select('-__v');
+    const obtainedServices = await Service.find({ isDeleted: false }).select('-__v');
 
     if (!obtainedServices) {
         throw new AppError(httpStatus.NOT_FOUND, 'Services Not Found !');
@@ -50,10 +50,27 @@ const updateServiceIntoDB = async (id: string, updatableData: Partial<TService>)
     ).select('-__v');
 
     if (!updatedService) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Service Not Found!');
+        throw new AppError(httpStatus.NOT_FOUND, 'Service Not Found !');
     };
 
     return updatedService;
+}
+
+
+const deleteServiceFromDB = async (id: string) => {
+
+    const deletedService = await Service.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true }
+    ).select('-__v');
+
+    if (!deletedService) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Failed To Delete Service !');
+    };
+
+    return deletedService;
+
 }
 
 
@@ -62,4 +79,5 @@ export const ServiceOfServices = {
     getSingleServiceFromDB,
     getAllServiceFromDB,
     updateServiceIntoDB,
+    deleteServiceFromDB,
 }
