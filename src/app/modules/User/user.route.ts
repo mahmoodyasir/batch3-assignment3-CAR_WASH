@@ -6,10 +6,13 @@ import { UserControllers } from './user.controller';
 
 const router = express.Router();
 
-router.post('/signup', 
-    validateRequest(UserValidation.userValidationSchema), 
+router.post('/signup',
+    validateRequest(UserValidation.userValidationSchema),
     UserControllers.userSignUp);
 
 
+router.post('/login',
+    validateRequest(UserValidation.loginDataValidationSchema),
+    UserControllers.userLogin);
 
 export const UserRoutes = router;
