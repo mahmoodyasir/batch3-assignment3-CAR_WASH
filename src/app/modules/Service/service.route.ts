@@ -13,7 +13,13 @@ router.post('/',
     ServiceControllers.createService);
 
 router.get('/:id', ServiceControllers.getSingleService);
+
 router.get('/', ServiceControllers.getAllService);
+
+router.put('/:id',
+    auth(USER_ROLE.admin),
+    validateRequest(ServiceValidation.serviceUpdateValidationSchema),
+    ServiceControllers.updateService);
 
 
 

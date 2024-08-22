@@ -9,7 +9,7 @@ const createServiceIntoDB = async (payload: TService) => {
 
     const serviceObject = (newService as any).toObject();
 
-    const {  __v, ...remainingData } = serviceObject;
+    const { __v, ...remainingData } = serviceObject;
 
     return remainingData;
 };
@@ -17,19 +17,15 @@ const createServiceIntoDB = async (payload: TService) => {
 
 const getSingleServiceFromDB = async (id: string) => {
 
-    const obtainedService = await Service.findById(id);
+    const obtainedService = await Service.findById(id).select('-__v');
 
     if (!obtainedService) {
         throw new AppError(httpStatus.NOT_FOUND, 'Service Not Found !');
     }
 
 
-    const serviceObject = (obtainedService as any).toObject();
-
-    const {  __v, ...remainingData } = serviceObject;
-
-    return remainingData;
-}
+    return obtainedService;
+};
 
 
 const getAllServiceFromDB = async () => {
@@ -42,10 +38,28 @@ const getAllServiceFromDB = async () => {
 
 
     return obtainedServices;
+};
+
+
+const updateServiceIntoDB = async (id: string, updatableData: Partial<TService>) => {
+
+    const updatedService = await Service.findByIdAndUpdate(
+        id,
+        { $set: updatableData },
+        { new: true, runValidators: true }
+    ).select('-__v');
+
+    if (!updatedService) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Service Not Found!');
+    };
+
+    return updatedService;
 }
+
 
 export const ServiceOfServices = {
     createServiceIntoDB,
     getSingleServiceFromDB,
     getAllServiceFromDB,
+    updateServiceIntoDB,
 }

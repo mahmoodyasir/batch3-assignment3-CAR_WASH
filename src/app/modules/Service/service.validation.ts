@@ -10,7 +10,18 @@ const serviceValidationSchema = z.object({
     })
 });
 
+const serviceUpdateValidationSchema = z.object({
+    body: z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        price: z.number().optional(),
+        duration: z.number().optional(),
+        isDeleted: z.boolean().optional(),
+    })
+});
+
 
 export const ServiceValidation = {
     serviceValidationSchema,
+    serviceUpdateValidationSchema,
 }
