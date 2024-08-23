@@ -28,11 +28,12 @@ const slotValidationSchema = z.object({
         date: dateStringSchema,
         startTime: timeStringSchema,
         endTime: timeStringSchema,
+        isBooked: z.enum(['available', 'booked', 'canceled']).optional(),
     })
 });
 
 
 
-export const slotValidation = {
+export const SlotValidation = {
     slotValidationSchema,
 }

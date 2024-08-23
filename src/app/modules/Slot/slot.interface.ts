@@ -6,4 +6,5 @@ export interface TSlot {
     date: string,
     startTime: string,
     endTime: string,
+    isBooked?: 'available' | 'booked' | 'canceled',
 }

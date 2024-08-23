@@ -19,10 +19,15 @@ const slotSchema = new Schema<TSlot>(
         endTime: {
             type: String,
             required: true,
+        },
+        isBooked: {
+            type: String,
+            enum: ['available', 'booked', 'canceled']
         }
     },
     {
         timestamps: true,
+        versionKey: false,
     }
 );
 
