@@ -41,9 +41,31 @@ const createBookingIntoDB = async (email: string, payload: any) => {
 
     return newBookingService;
 
+};
+
+
+const getAllBookingsFromDB = async () => {
+
+    const allBookings = await Booking.find().populate([
+        {
+            path: 'customer',
+            select: '-__v'
+        },
+        {
+            path: 'service',
+            select: '-__v'
+        },
+        {
+            path: 'slot',
+            select: '-__v'
+        },
+    ]);
+
+    return allBookings;
 }
 
 
 export const BookingServices = {
     createBookingIntoDB,
+    getAllBookingsFromDB,
 }
