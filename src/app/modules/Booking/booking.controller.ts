@@ -34,7 +34,24 @@ const getAllServiceBooking = catchAsync(async (req, res) => {
 });
 
 
+const getPersonalServiceBooking = catchAsync(async (req, res) => {
+
+    const {email} = req.user;
+
+    const result = await BookingServices.getPersonalBookingDataFromDB(email);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User bookings retrieved successfully",
+        data: result
+    });
+
+});
+
+
 export const BookingControllers = {
     createServiceBooking,
     getAllServiceBooking,
+    getPersonalServiceBooking,
 }
